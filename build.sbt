@@ -132,6 +132,31 @@ lazy val scalalib =
     ).
     dependsOn(javalib)
 
+lazy val shouldPartest = settingKey[Boolean](
+  "Whether we should partest the current scala version (and fail if we can't)")
+
+lazy val partest = 
+  project.in(file("partest")).
+    settings(
+      resolvers += Resolver.typesafeIvyRepo("releases"),
+      libraryDependencies ++= {
+        if (shouldPartest.value)
+          Seq(
+            "org.scala-sbt" % "sbt" % sbtVersion.value,
+            "org.scala-lang.modules" %% "scala-partest" % "1.0.13"
+          )
+        else Seq()
+      },
+      sources in Compile := {
+        if (shouldPartest.value) {
+          // Partest sources and some sources of sbtplugin (see above)
+          val baseSrcs = (sources in Compile).value
+
+          baseSrcs
+        } else Seq()
+      }
+  ).dependsOn(scalalib)
+
 lazy val demoNative =
   project.in(file("demo/native")).
     settings(libSettings).
