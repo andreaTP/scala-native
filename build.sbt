@@ -143,6 +143,15 @@ lazy val demoNative =
     ).
     dependsOn(scalalib, clib)
 
+lazy val demoKmeans =
+  project.in(file("demo/kmeans")).
+    settings(libSettings).
+    settings(
+      nativeVerbose := true,
+      nativeClangOptions := Seq("-O2")
+    ).
+    dependsOn(scalalib, clib) 
+
 lazy val demoJVM =
   project.in(file("demo/jvm")).
     settings(
