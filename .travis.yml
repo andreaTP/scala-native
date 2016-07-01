@@ -8,10 +8,18 @@ matrix:
     - os: linux
       jdk: oraclejdk8
       language: scala
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
+          packages:
+            - clang-3.7
+      env: COMPILER=clang++-3.7
       before_install:
         - sudo apt-get -qq update
         - sudo apt-get install -y libgc-dev
-        - jdk_switcher use oraclejdk8
     - os: osx
       osx_image: xcode7.3
 
@@ -30,7 +38,6 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install bdw-gc  ; fi;
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew link bdw-gc     ; fi;
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install jq      ; fi;
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then jdk_switcher use oraclejdk8           ; fi
   - if [ "$TRAVIS_PULL_REQUEST" != "false" ] ; then
       echo "Incoming pull request from https://github.com/$TRAVIS_REPO_SLUG/pull/$TRAVIS_PULL_REQUEST";
       author=$(curl -u dummy4dummy:dummy2dummy -s "https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST" | jq -r ".user.login");
