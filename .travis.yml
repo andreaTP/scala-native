@@ -8,18 +8,9 @@ matrix:
     - os: linux
       jdk: oraclejdk8
       language: scala
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-      env: COMPILER=clang++-3.7
       before_install:
         - sudo apt-get -qq update
-        - sudo apt-get install -y libgc-dev
+        - sudo apt-get install -y libgc-dev clang++-3.7 llvm-3.7 llvm-3.7-dev llvm-3.7-runtime llvm-3.7-tool
     - os: osx
       osx_image: xcode7.3
 
